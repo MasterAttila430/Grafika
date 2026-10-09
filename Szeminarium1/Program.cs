@@ -38,14 +38,15 @@ namespace Szeminarium1
         }
         ";
         
-        private static void CheckError(string hol)
+        private static void CheckError(string where)
         {
-            GLEnum err; //megyek while,mert tobb hibat is ki irhatunk igy.
-            while ((err = Gl.GetError()) != GLEnum.NoError)
+            var error = Gl.GetError();
+            if (error != GLEnum.NoError)
             {
-                Console.WriteLine($"[GL HIBA] {hol}: {err}");
+                Console.WriteLine($"OpenGL error at {where}: {error}");
             }
         }
+
 
         static void Main(string[] args)
         {
@@ -97,6 +98,7 @@ namespace Szeminarium1
             {
                 Console.WriteLine($"Error linking shader {Gl.GetProgramInfoLog(program)}");
             }
+            CheckError("program link");
 
         }
 
@@ -117,22 +119,47 @@ namespace Szeminarium1
             Gl.BindVertexArray(vao);
 
             float[] vertexArray = new float[] {
-                -0.5f, -0.5f, 0.0f,
-                +0.5f, -0.5f, 0.0f,
-                 0.0f, +0.5f, 0.0f,
-                 1f, 1f, 0f
+                -0.69f, +0.4f, 0.0f,// bal fent
+                +0.0f, 0.8f, 0.0f,//fent
+                 0.69f, +0.4f, 0.0f,// jobb fent
+                 0f, 0f, 0f,//kozep
+
+                 0f, 0f, 0f,//kozep
+                 -0.69f, 0.4f, 0.0f,//bal fent
+                 -0.69f, -0.4f, 0.0f,//bal lent
+                 0.0f,-0.8f, 0.0f,//lent
+
+                 0.0f, 0.0f, 0.0f,//kozep
+                 0.69f, 0.4f, 0.0f,//jobb fent
+                 0.69f,-0.4f,0.0f,//jobb lent
+                 0.0f,-0.8f,0.0f//lent
+
             };
 
             float[] colorArray = new float[] {
                 1.0f, 0.0f, 0.0f, 1.0f,
-                0.0f, 1.0f, 0.0f, 1.0f,
-                0.0f, 0.0f, 1.0f, 1.0f,
                 1.0f, 0.0f, 0.0f, 1.0f,
+                1.0f, 0.0f, 0.0f, 1.0f,
+                1.0f, 0.0f, 0.0f, 1.0f,
+
+                0.0f, 1.0f, 0.0f, 1.0f,
+                0.0f, 1.0f, 0.0f, 1.0f,
+                0.0f, 1.0f, 0.0f, 1.0f,
+                0.0f, 1.0f, 0.0f, 1.0f,
+
+                0.0f, 0.0f, 1.0f, 1.0f,
+                0.0f, 0.0f, 1.0f, 1.0f,
+                0.0f, 0.0f, 1.0f, 1.0f,
+                0.0f, 0.0f, 1.0f, 1.0f,
             };
 
             uint[] indexArray = new uint[] { 
                 0, 1, 2,
-                2, 1, 3
+                0, 2, 3,
+                4,5,6,
+                4,6,7,
+                8,9,10,
+                8,10,11
             };
 
             uint vertices = Gl.GenBuffer();
@@ -152,7 +179,7 @@ namespace Szeminarium1
             uint indices = Gl.GenBuffer();
             Gl.BindBuffer(GLEnum.ElementArrayBuffer, indices);
             Gl.BufferData(GLEnum.ElementArrayBuffer, (ReadOnlySpan<uint>)indexArray.AsSpan(), GLEnum.StaticDraw);
-
+            CheckError("index buffer");
             Gl.BindBuffer(GLEnum.ArrayBuffer, 0);
 
             Gl.UseProgram(program);
@@ -161,7 +188,7 @@ namespace Szeminarium1
             CheckError("draw");
             Gl.BindBuffer(GLEnum.ElementArrayBuffer, 0);
             Gl.BindVertexArray(vao);
-            CheckError("index buffer");
+            
 
             // always unbound the vertex buffer first, so no halfway results are displayed by accident
             Gl.DeleteBuffer(vertices);
