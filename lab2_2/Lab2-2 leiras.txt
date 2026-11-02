@@ -1,0 +1,21 @@
+Lab2-2 - Rubik kocka
+Nev: Mezei-Racz Attila
+
+A lab2-1-es Rubik kockabol indultam ki, a billentyuzetet es az animaciot a 2. szeminarium alapjan csinaltam.
+
+A) Kamera
+A szeminariumi kamera csak az origo korul forgott, ezt atirtam, hogy szabadon lehessen mozogni.
+A kameranak van egy helye es ket szoge (balra-jobbra es fel-le), ebbol szamolom ki, merre nez.
+Minden gombnyomasra lep egyet vagy fordul 5 fokot.
+
+fel/le nyil - elore/hatra
+A/D - fordulas balra/jobbra
+W/S - billenes fel/le
+E/Q - fel/le
+
+B) Lapforgatas
+A felso lapot lehet forgatni: Space-re az egyik iranyba, Backspace-re a masikba, 90 fokot.
+A shaderbe tettem egy uRotation uniformot. A felso lap kockai ebben a forgatasi matrixot kapjak,
+a tobbi kocka egysegmatrixot, igy azok nem mozdulnak.
+A forgatas a CubeArrangementModel-ben van, lassan megy at (1 mp), es pontosan 90 foknal megall.
+Tobbszor egymas utan is lehet forgatni.

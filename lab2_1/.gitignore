@@ -1,0 +1,6 @@
+## Visual Studio / .NET build kimenetek - ezek ne keruljenek fel GitHubra
+bin/
+obj/
+.vs/
+*.user
+*.suo
